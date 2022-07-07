@@ -5,7 +5,21 @@ const { Category, Product } = require('../../models');
 
 router.get('/', (req, res) => {
   // find all categories
-  // be sure to include its associated Products
+  try {
+    const categoryData = await Category.findAll({
+        // be sure to include its associated Products
+      include: [{model: Product, attributes: ["product_name", "price", "stock"]}]
+    });
+
+    if (categoryData) {
+      return res.json(categoryData)
+    }
+  }
+  catch (error) {
+    console.log(`Error - Failed to get all categories | ${error.message}`);
+    return res.status(500).json(error)
+  }
+
 });
 
 router.get('/:id', (req, res) => {
