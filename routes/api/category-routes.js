@@ -54,15 +54,25 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   // update a category by its `id` value
+  try {
+    const { id } = req.params;
+    const { category_name } = req.body;
+
+    await Category.update({ category_name }, { where: { id } });
+
+    return res.json({ message: "Category Updated" });
+  } catch (error) {
+    console.log(`Error - Failed to update category | ${error.message}`);
+    return res.status(500).json(error);
+  }
 });
 
 router.delete("/:id", async (req, res) => {
   // delete a category by its `id` value
   try {
     const { id } = req.params;
-    const categoryData = await Category.findByPk(id);
 
     await Category.destroy({ where: { id } });
     return res.status(200).json({ message: "Category Deleted" });
