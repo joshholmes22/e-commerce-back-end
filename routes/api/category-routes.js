@@ -22,9 +22,24 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   // find one category by its `id` value
-  // be sure to include its associated Products
+  try {
+    const { id } = req.params;
+    const categoryData = await Category.findByPk(id, {
+      include: {
+        model: Product,
+        // be sure to include its associated Products
+        attributes: ["product_name", "price", "stock"],
+      },
+    });
+    if (categoryData) {
+      return res.json(categoryData);
+    }
+  } catch (error) {
+    console.log(`Error - Failed to get category | ${error.message}`);
+    return res.status(500).json(error);
+  }
 });
 
 router.post("/", (req, res) => {

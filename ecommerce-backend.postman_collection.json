@@ -2,8 +2,8 @@
 	"info": {
 		"_postman_id": "15924957-7ad6af77-c536-42b5-abc0-8963867ad199",
 		"name": "eCommerce server",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-		// "_exporter_id": "21413374"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": ""
 	},
 	"item": [
 		{
