@@ -13,7 +13,9 @@ router.get("/", async (req, res) => {
       ],
     });
 
-    if (categoryData) {
+    if (!categoryData) {
+      return res.status(500).json({ message: "Error, category not found" });
+    } else {
       return res.json(categoryData);
     }
   } catch (error) {
@@ -35,8 +37,9 @@ router.get("/:id", async (req, res) => {
     });
     if (!categoryData) {
       return res.status(500).json({ message: "Error, category not found" });
+    } else {
+      return res.json(categoryData);
     }
-    return res.json(categoryData);
   } catch (error) {
     console.log(`Error - Failed to get category | ${error.message}`);
     return res.status(500).json(error);

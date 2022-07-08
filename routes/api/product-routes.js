@@ -11,7 +11,12 @@ router.get("/", async (req, res) => {
       // be sure to include its associated Category and Tag data
       include: [{ model: Category }, { model: Tag }],
     });
-    return res.json(productData);
+
+    if (!productData) {
+      return res.status(500).json({ message: "Error, category not found" });
+    } else {
+      return res.json(productData);
+    }
   } catch (error) {
     console.error(`ERROR - Failed to get all products | ${error.message}`);
     return res.status(500).json(error);
@@ -29,8 +34,9 @@ router.get("/:id", async (req, res) => {
     });
     if (!productData) {
       return res.status(500).json({ message: "Error, product not found" });
+    } else {
+      return res.json(productData);
     }
-    return res.json(productData);
   } catch (error) {
     console.log(`Error - Failed to get product | ${error.message}`);
     return res.status(500).json(error);
