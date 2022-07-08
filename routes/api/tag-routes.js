@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Tag, Product, ProductTag } = require("../../models");
+const { Tag, Product, ProductTag, Category } = require("../../models");
 
 // The `/api/tags` endpoint
 
@@ -44,8 +44,16 @@ router.get("/:id", async (req, res) => {
   // be sure to include its associated Product data
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   // create a new tag
+  try {
+    const { tagName } = req.body;
+    await Tag.create(req.body);
+    return res.json(tagName);
+  } catch (error) {
+    console.log(`Error - Failed to create category | ${error.message}`);
+    return res.status(500).json(error);
+  }
 });
 
 router.put("/:id", (req, res) => {
