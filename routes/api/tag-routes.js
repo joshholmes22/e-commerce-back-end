@@ -56,8 +56,19 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   // update a tag's name by its `id` value
+  try {
+    const { id } = req.params;
+    const { tag_name } = req.body;
+
+    await Tag.update({ tag_name }, { where: { id } });
+
+    return res.json({ message: "Tag Updated" });
+  } catch (error) {
+    console.log(`Error - Failed to update category | ${error.message}`);
+    return res.status(500).json(error);
+  }
 });
 
 router.delete("/:id", (req, res) => {
