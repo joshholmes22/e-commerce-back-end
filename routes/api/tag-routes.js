@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
       return res.json(tagData);
     }
   } catch (error) {
-    console.log(`Error - Failed to update category | ${error.message}`);
+    console.log(`Error - Failed to find tags | ${error.message}`);
     return res.status(500).json(error);
   }
 });
@@ -38,7 +38,7 @@ router.get("/:id", async (req, res) => {
       return res.json(tagData);
     }
   } catch (error) {
-    console.log(`Error - Failed to update category | ${error.message}`);
+    console.log(`Error - Failed to find tag | ${error.message}`);
     return res.status(500).json(error);
   }
   // be sure to include its associated Product data
@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
     await Tag.create(req.body);
     return res.json(tagName);
   } catch (error) {
-    console.log(`Error - Failed to create category | ${error.message}`);
+    console.log(`Error - Failed to create tag | ${error.message}`);
     return res.status(500).json(error);
   }
 });
@@ -66,13 +66,22 @@ router.put("/:id", async (req, res) => {
 
     return res.json({ message: "Tag Updated" });
   } catch (error) {
-    console.log(`Error - Failed to update category | ${error.message}`);
+    console.log(`Error - Failed to update tag | ${error.message}`);
     return res.status(500).json(error);
   }
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   // delete on tag by its `id` value
+  try {
+    const { id } = req.params;
+
+    await Tag.destroy({ where: { id } });
+    return res.status(200).json({ message: "Tag Deleted" });
+  } catch (error) {
+    console.log(`Error - Failed to delete tag | ${error.message}`);
+    return res.status(500).json(error);
+  }
 });
 
 module.exports = router;
